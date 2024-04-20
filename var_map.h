@@ -1,13 +1,20 @@
-#include "sat.h"
+#include "cnf_sat_formula.h"
+
+/**
+ * Structure to store an array of unique variables.
+ */
+typedef struct {
+  Variable **vars; // Array of Variable pointers
+  int count;       // Number of unique variables
+} UniqueVarArray;
 
 /**
  * Custom map to store Variable-boolean pairs.
  */
-typedef struct
-{
-    Variable *keys[MAX_VARIABLES]; // Array of Variable pointers
-    bool values[MAX_VARIABLES];    // Array of boolean values
-    int size;                      // Current size of the map
+typedef struct {
+  Variable *keys[MAX_VARIABLES]; // Array of Variable pointers
+  bool values[MAX_VARIABLES];    // Array of boolean values
+  int size;                      // Current size of the map
 } VarMap;
 
 /**
@@ -15,7 +22,7 @@ typedef struct
  *
  * @return Pointer to the newly created VarMap.
  */
-VarMap* var_map_init();
+VarMap *var_map_init();
 
 /**
  * Inserts a Variable-boolean pair into the map.
@@ -25,7 +32,7 @@ VarMap* var_map_init();
  * @param value Boolean value to associate with the Variable.
  * @return true if insertion was successful, false otherwise.
  */
-bool var_map_insert(VarMap* map, Variable* key, bool value);
+bool var_map_insert(VarMap *map, Variable *key, bool value);
 
 /**
  * Retrieves the boolean value associated with a Variable.
@@ -35,11 +42,11 @@ bool var_map_insert(VarMap* map, Variable* key, bool value);
  * @param value Pointer to store the retrieved boolean value.
  * @return true if the Variable exists in the map, false otherwise.
  */
-bool var_map_get(VarMap* map, Variable* key, bool* value);
+bool var_map_get(VarMap *map, Variable *key, bool *value);
 
 /**
  * Frees the memory used by the VarMap.
  *
  * @param map Pointer to the VarMap to free.
  */
-void var_map_free(VarMap* map);
+void var_map_free(VarMap *map);
