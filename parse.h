@@ -1,5 +1,11 @@
 #include "sat.h"
 
+#define SPACE ' '
+#define LEFT_PAREN '('
+#define RIGHT_PAREN ')'
+#define NOT '~'
+#define OR '|'
+
 enum Symbol {
     GrammarCNF, GrammarDisjunction, GrammarLiteral
 };
@@ -10,7 +16,7 @@ enum Symbol {
  * @param c The character to check.
  * @return true if the character is a white-space character (' ', '\t', '\n'), false otherwise.
  */
-bool isWhiteSpace(char c);
+bool isWhiteSpace(const char c);
 
 /**
  * Check if a given character is a valid character for a variable name.
@@ -18,7 +24,7 @@ bool isWhiteSpace(char c);
  * @param c The character to check.
  * @return true if the character is a valid variable character (uppercase letter, lowercase letter, or digit), false otherwise.
  */
-bool isVariableChar(char c);
+bool isVariableChar(const char c);
 
 /**
  * Parse a variable name from a given CNF (Conjunctive Normal Form) string starting at a given index.
@@ -40,5 +46,21 @@ Variable *parseVariable(char *cnf_string, int *index);
  */
 Literal *parseLiteral(char *cnf_string, int *index);
 
-Disjunction* parseDisjunction(char *cnf_string, int *index);
-CNFSatFormula parseCNF(char *cnf_string);
+/**
+ * Parses a disjunction from a CNF string.
+ *
+ * @param cnf_string The CNF string to parse.
+ * @param index Pointer to the current index in the string.
+ * @return A pointer to the parsed Disjunction. To avoid memory leaks, the returned pointer
+ * must be deallocated with free() or realloc().
+ */
+Disjunction *parseDisjunction(char *cnf_string, int *index);
+
+/**
+ * Parses a CNF SAT formula from a CNF string.
+ *
+ * @param cnf_string The CNF string to parse.
+ * @return A pointer to the parsed CNFSatFormula. To avoid memory leaks, the returned pointer
+ * must be deallocated with free() or realloc().
+ */
+CNFSatFormula *parseCNF(char *cnf_string);

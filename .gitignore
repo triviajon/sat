@@ -1,0 +1,33 @@
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Executables
+sat
+*.exe
+*.out
+*.app
+
+# Shared library files
+*.dll
+*.so
+*.dylib
+
+# Compiled Dynamic libraries
+*.lib
+
+# Compiled Static libraries
+*.a
+
+# Dependencies
+*.dep
+*.d
+
+# Build directories
+/build/
+/bin/
+
+# Other
+.vscode
