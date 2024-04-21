@@ -1,26 +1,47 @@
+# Compiler
 CC = clang
-CFLAGS = -g -Wall -Wextra
-LDFLAGS =
 
-SRCS = parse.c sat.c main.c
-OBJS = $(SRCS:.c=.o)
-EXEC = sat
+# Compiler flags
+CFLAGS = -Wall -Wextra -Iinclude -g
 
-.PHONY: all clean
+# Source directories
+SRCDIR = src
+TESTDIR = tests
 
-all: $(EXEC)
+# Object files
+TEST_OBJS = $(TESTDIR)/tester.o $(TESTDIR)/test_eval_CNFSatFormula.o
+MAIN_OBJS = $(SRCDIR)/main.o
+SHARED_OBJS = $(SRCDIR)/var_map.o $(SRCDIR)/sat.o $(SRCDIR)/parse.o
 
-$(EXEC): $(OBJS)
-	$(CC) $(LDFLAGS) $(OBJS) -o $(EXEC)
+# Executable names
+MAIN_EXE = main
+TEST_EXE = tester
 
-parse.o: parse.c parse.h sat.h var_map.h
-	$(CC) $(CFLAGS) -c parse.c
+# Conditional rules based on TEST variable
+ifeq ($(TEST), 1)
+all: $(TEST_EXE)
+OBJS = $(SHARED_OBJS) $(TEST_OBJS)
+else
+all: $(MAIN_EXE)
+OBJS = $(SHARED_OBJS) $(MAIN_OBJS)
+endif
 
-var_map.o: var_map.c var_map.h sat.h
-	$(CC) $(CFLAGS) -c var_map.c
+# Rule to build the main executable
+$(MAIN_EXE): $(OBJS)
+	$(CC) $(CFLAGS) -o $@ $^
 
-main.o: main.c parse.h var_map.h
-	$(CC) $(CFLAGS) -c main.c
+# Rule to build the test executable
+$(TEST_EXE): $(OBJS)
+	$(CC) $(CFLAGS) -o $@ $^
 
+# Generic rule to compile C files to object files from src directory
+$(SRCDIR)/%.o: $(SRCDIR)/%.c include/*.h
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+# Generic rule to compile C files to object files from tests directory
+$(TESTDIR)/%.o: $(TESTDIR)/%.c include/*.h
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+# Clean rule
 clean:
-	rm -f $(OBJS) $(EXEC)
+	rm -f $(SRCDIR)/*.o $(TESTDIR)/*.o $(MAIN_EXE) $(TEST_EXE)
