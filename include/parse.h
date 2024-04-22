@@ -27,6 +27,16 @@ bool is_whitespace(const char c);
 bool is_variable_char(const char c);
 
 /**
+ * Increments the index given until there is no longer whitespace.
+ * 
+ * @param cnf_string The CNF string to start skipping whitespace in.
+ * @param index A pointer to the index in the CNF string to start skipping
+ * whitespac from.
+ * @return The amount of whitespace skipped, counted in chars.
+*/
+int skip_whitespace(char *cnf_string, int *index);
+
+/**
  * Parse a variable name from a given CNF (Conjunctive Normal Form) string
  * starting at a given index.
  *

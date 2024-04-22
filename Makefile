@@ -14,7 +14,7 @@ MAIN_OBJS = $(SRCDIR)/main.o
 SHARED_OBJS = $(SRCDIR)/var_map.o $(SRCDIR)/sat.o $(SRCDIR)/parse.o
 
 # Executable names
-MAIN_EXE = main
+MAIN_EXE = sat
 TEST_EXE = tester
 
 # Conditional rules based on TEST variable

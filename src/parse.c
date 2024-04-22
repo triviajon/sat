@@ -7,6 +7,14 @@ bool is_variable_char(const char c) {
          (c >= '0' && c <= '9');
 };
 
+int skip_whitespace(char *cnf_string, int *index) {
+  int skipped = 0;
+  while (is_whitespace(cnf_string[*index])) {
+    skipped++; (*index)++;
+  }
+  return skipped;
+}
+
 Variable *parse_variable(char *cnf_string, int *index) {
   char var_name[MAX_VARIABLE_LEN];
   int length = 0;
@@ -62,9 +70,7 @@ Disjunction *parse_disjunction(char *cnf_string, int *index) {
     literals[num_literals] = lit;
     num_literals++;
 
-    while (is_whitespace(cnf_string[*index])) {
-      (*index)++;
-    }
+    skip_whitespace(cnf_string, index);
 
     if (cnf_string[*index] != OR) {
       break;
@@ -73,16 +79,10 @@ Disjunction *parse_disjunction(char *cnf_string, int *index) {
     (*index)++;
   }
 
-  while (true) {
-    if (is_whitespace(cnf_string[*index])) {
-      (*index)++;
-    } else if (cnf_string[*index] == RIGHT_PAREN) {
-      // Do not increment index since RIGHT_PAREN is part of the CNF var in the
-      // grammar
-      break;
-    } else {
-      return NULL;
-    }
+  skip_whitespace(cnf_string, index);
+
+  if (cnf_string[*index] != RIGHT_PAREN) {
+    return NULL;
   }
 
   Disjunction *disj = (Disjunction *)malloc(sizeof(Disjunction));
@@ -120,9 +120,7 @@ CNFSatFormula *parse_CNF(char *cnf_string) {
     disjunctions[num_disjunctions] = disj;
     num_disjunctions++;
 
-    while (is_whitespace(cnf_string[index])) {
-      index++;
-    }
+    skip_whitespace(cnf_string, &index);
 
     if (cnf_string[index] == RIGHT_PAREN) {
       index++;
@@ -132,11 +130,15 @@ CNFSatFormula *parse_CNF(char *cnf_string) {
       return NULL;
     }
 
+    skip_whitespace(cnf_string, &index);
+
     if (cnf_string[index] == '+') {
       index++;
     } else {
       break;
     }
+
+    skip_whitespace(cnf_string, &index);
   }
 
   CNFSatFormula *cnfsat = (CNFSatFormula *)malloc(sizeof(CNFSatFormula));
