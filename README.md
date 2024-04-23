@@ -49,7 +49,8 @@ make clean && make TEST=1
 The project uses standard C libraries and does not require any external dependencies.
 
 ### To-do List
-- Comphrensive testing strategy
+- Comphrensive testing strategy for solving
+- Write little language for working with boolean expressions in a REPL.
 - Extending parsing to all valid boolean expressions and converting to CNF.
 - Implement solving of CNF formulas.
 

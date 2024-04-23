@@ -9,9 +9,9 @@ SRCDIR = src
 TESTDIR = tests
 
 # Object files
-TEST_OBJS = $(TESTDIR)/tester.o $(TESTDIR)/test_eval_CNFSatFormula.o
+TEST_OBJS = $(TESTDIR)/tester.o $(TESTDIR)/test_eval_CNFSatFormula.o $(TESTDIR)/test_solve_CNFSatFormula.o
 MAIN_OBJS = $(SRCDIR)/main.o
-SHARED_OBJS = $(SRCDIR)/var_map.o $(SRCDIR)/sat.o $(SRCDIR)/parse.o
+SHARED_OBJS = $(SRCDIR)/var_map.o $(SRCDIR)/sat.o $(SRCDIR)/parse.o $(SRCDIR)/solve.o
 
 # Executable names
 MAIN_EXE = sat
