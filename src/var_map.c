@@ -14,14 +14,6 @@ VarMap *init_VarMap() {
   return map;
 };
 
-/**
- * Inserts a Variable-boolean pair into the map.
- *
- * @param map Pointer to the VarMap.
- * @param key Pointer to the Variable.
- * @param value Boolean value to associate with the Variable.
- * @return true if insertion was successful, false otherwise.
- */
 bool insert_VarMap(VarMap *map, Variable *key, bool value) {
   if (map == NULL || key == NULL) {
     return false;
@@ -59,14 +51,6 @@ bool insert_VarMap(VarMap *map, Variable *key, bool value) {
   return true;
 };
 
-/**
- * Retrieves the boolean value associated with a Variable.
- *
- * @param map Pointer to the VarMap.
- * @param key Pointer to the Variable to look up.
- * @param value Pointer to store the retrieved boolean value.
- * @return true if the Variable exists in the map, false otherwise.
- */
 bool get_VarMap(VarMap *map, Variable *key, bool *value) {
   bool exists;
   int var_index = contains_VarMap(map, key, &exists);
@@ -93,13 +77,48 @@ int contains_VarMap(VarMap *map, Variable *key, bool *exists) {
   return -1;
 }
 
-/**
- * Frees the memory used by the VarMap.
- *
- * @param map Pointer to the VarMap to free.
- */
 void cleanup_VarMap(VarMap *map) {
   free(map->keys);
   free(map->values);
   free(map);
 };
+
+bool print_VarMap(VarMap *map, char *buffer, int bufferSize) {
+    if (!map || !buffer || bufferSize <= 0) {
+        return false;
+    }
+
+    int offset = 0;
+    int remainingSize = bufferSize;
+
+    int len = snprintf(buffer + offset, remainingSize, "{");
+    if (len < 0 || len >= remainingSize) {
+        return false; // Buffer too small
+    }
+    offset += len;
+    remainingSize -= len;
+
+    // Write each variable-name and its associated boolean value to the buffer
+    for (int i = 0; i < map->size; ++i) {
+        Variable *key = map->keys[i];
+        bool value = map->values[i];
+
+        len = snprintf(buffer + offset, remainingSize, "\"%s\": %s, ", key->name, value ? "true" : "false");
+        if (len < 0 || len >= remainingSize) {
+            return false; // Buffer too small
+        }
+        offset += len;
+        remainingSize -= len;
+    }
+
+    // Replace the last ", " with a closing brace and null terminator
+    if (map->size > 0) {
+        buffer[offset - 2] = '}';
+        buffer[offset - 1] = '\0';
+    } else {
+        buffer[offset] = '}';
+        buffer[offset + 1] = '\0';
+    }
+
+    return true;
+}
