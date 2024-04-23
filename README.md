@@ -1,6 +1,6 @@
 ## SAT Solver
 
-This project is a simple implementation of evaluation and solving for SAT formulas (boolean expressions) using C. Still under construction! Internally, formulas are represented in conjunctive normal form (CNF). The CNF formulas are used to represent Boolean expressions as a conjunction (AND) of disjunctions (ORs). The solver can evaluate if a given CNF formula is satisfiable or not under a given variable assignment. 
+This project is a simple implementation of evaluation and solving for SAT formulas (boolean expressions) using C. Still under construction! Internally, formulas are represented in conjunctive normal form (CNF). The CNF formulas are used to represent Boolean expressions as a conjunction (AND) of disjunctions (ORs). 
 
 ### Project Structure
 
@@ -15,6 +15,7 @@ The project consists of several source files organized into directories as follo
 - **`var_map.c`** and **`var_map.h`**: Implements a custom map to store Variable-boolean pairs.
 - **`sat.c`** and **`sat.h`**: Defines data structures and functions related to SAT formulas.
 - **`parse.c`** and **`parse.h`**: Implements parsing functions to convert CNF strings into CNF SAT formulas.
+- **`solve.c`** and **`solve.h`**: Implements solving functions find a satisfying assignment of CNF SAT formulas.
 - **`main.c`**: Contains the main function to test the CNF SAT solver.
 - **`cnf_sat_formula.h`**: Defines data structures used to represent CNF SAT formulas.
 - **`Makefile`**: Contains instructions to compile the project.
@@ -49,9 +50,8 @@ make clean && make TEST=1
 The project uses standard C libraries and does not require any external dependencies.
 
 ### To-do List
-- Comphrensive testing strategy for solving
 - Write little language for working with boolean expressions in a REPL.
 - Extending parsing to all valid boolean expressions and converting to CNF.
-- Implement solving of CNF formulas.
+- Optimize solving of CNF formulas.
 
 ---
