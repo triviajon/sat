@@ -6,6 +6,8 @@
 #include "cnf_sat_formula.h"
 #include "sat.h"
 
+#define BASE_CASE_SIZE -1
+
 /**
  * Checks if a CNFSatFormula is satisfiable.
  *

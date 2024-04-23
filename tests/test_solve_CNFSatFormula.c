@@ -1,51 +1,83 @@
 #include "test_solve_CNFSatFormula.h"
 
-void test_solve_CNFSatFormula() {
+void _test_solve_CNFSatFormula(char *cnf_string, bool expected) {
+  CNFSatFormula *cnf_sat = parse_CNF(cnf_string);
+  UniqueVarArray *unique_vars = find_unique_variables(cnf_sat);
 
-    /**
-     * Testing strategy for solve_CNFSatFormula:
-     *  cover all subdomains of the following partitions minimally
-     * 
-     */
+  VarMap *var_map = init_VarMap();
+  bool is_satisfied = solve_CNFSatFormula(cnf_sat, var_map);
 
-
-    {
-        printf("  Test (solve_CNFSatFormula)\n");
-        char *cnf_string1 = "(x|y|~z)+(x|~y|z)+(~x|y|z)";
-        CNFSatFormula *cnf_sat1 = parse_CNF(cnf_string1);
-        VarMap *var_map1 = init_VarMap();
-        Variable var_x = { "x" };
-        Variable var_y = { "y" };
-        Variable var_z = { "z" };
-
-        bool result;
-
-        bool is_satisfiable = solve_CNFSatFormula(cnf_sat1, var_map1);
-        assert(is_satisfiable);
-
-        // Verify the satisfying assignment
-        bool value_x, value_y, value_z;
-        get_VarMap(var_map1, &var_x, &value_x);
-        get_VarMap(var_map1, &var_y, &value_y);
-        get_VarMap(var_map1, &var_z, &value_z);
-
-        // The satisfying assignment should satisfy the CNF formula
-        CNFSatFormula *formula_check = parse_CNF(cnf_string1);
-        insert_VarMap(var_map1, &var_x, value_x);
-        insert_VarMap(var_map1, &var_y, value_y);
-        insert_VarMap(var_map1, &var_z, value_z);
-
-        bool successful_eval = eval_CNFSatFormula(formula_check, var_map1, &result);
-        assert(successful_eval);
-        assert(result);
-
-        printf("    Test passed\n");
-
-        cleanup_CNFSatFormula(cnf_sat1);
-        cleanup_VarMap(var_map1);
-        cleanup_CNFSatFormula(formula_check);
+  if (expected) {
+    assert(is_satisfied);
+    char buffer[256];
+    bool success = print_VarMap(var_map, buffer, sizeof(buffer));
+    if (success) {
+      printf("    VarMap contents: %s\n", buffer);
     }
 
+    bool result;
+    bool successful_eval = eval_CNFSatFormula(cnf_sat, var_map, &result);
+    assert(successful_eval);
+    assert(result);
+  } else {
+    assert(!is_satisfied);
+  }
 
-    printf("All test cases passed successfully!\n");
+  printf("    Test passed\n");
+  cleanup_CNFSatFormula(cnf_sat);
+  cleanup_UniqueVarArray(unique_vars);
+  cleanup_VarMap(var_map);
+}
+
+void test_solve_CNFSatFormula() {
+
+  /**
+   * Testing strategy for solve_CNFSatFormula:
+   *  cover all subdomains of the following partitions minimally
+   *
+   *  bool solve_CNFSatFormula(CNFSatFormula *formula, VarMap *var_map)
+   *
+   *  partition on formula (AND): contains AND, does not contain AND
+   *  partition on formula (OR): contains OR, does not contain OR
+   *  partition on formula (NOT): contains NOT, does not contain NOT
+   *  partition on formula (clauses): #clauses = 1, #clauses = 2, #clauses > 2
+   *  partition on formula (satisfiability): formula is satisfiable, formula is
+   * not satisfiable
+   */
+
+  {
+    printf("  Test (covers +AND, -OR, -NOT, #clauses = 2, "
+           "formula is satisfiable):\n");
+    char *cnf_string1 = "(x)+(y)";
+    _test_solve_CNFSatFormula(cnf_string1, true);
+  }
+
+  {
+    printf("  Test (covers -AND, +OR, -NOT, #clauses = 1, "
+           "formula is satisfiable):\n");
+    char *cnf_string1 = "(x|y)";
+    _test_solve_CNFSatFormula(cnf_string1, true);
+  }
+
+  {
+    printf("  Test (covers -AND, -OR, +NOT, #clauses = 1, "
+           "formula is satisfiable):\n");
+    char *cnf_string1 = "(~longVariableName)";
+    _test_solve_CNFSatFormula(cnf_string1, true);
+  }
+
+  {
+    printf("  Test (covers +AND, +OR, +NOT, #clauses > 2, "
+           "formula is not satisfiable):\n");
+    char *cnf_string1 = "(x|y) + (~x|~y) + (x|~y) + (~x|y)";
+    _test_solve_CNFSatFormula(cnf_string1, false);
+  }
+
+  {
+    printf("  Test (extra #1)\n");
+    char *cnf_string1 = "(x|y|~z)+(x|~y|z)+(~x|y|z)";
+    _test_solve_CNFSatFormula(cnf_string1, true);
+  }
+
+  printf("All test cases passed successfully!\n");
 }
