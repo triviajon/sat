@@ -1,3 +1,6 @@
+#ifndef PARSE_H
+#define PARSE_H
+
 #include "sat.h"
 
 #define SPACE ' '
@@ -78,3 +81,5 @@ Disjunction *parse_disjunction(char *cnf_string, int *index);
  * returned pointer must be deallocated with free() or realloc().
  */
 CNFSatFormula *parse_CNF(char *cnf_string);
+
+#endif /* PARSE_H */

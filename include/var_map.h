@@ -1,3 +1,6 @@
+#ifndef VAR_MAP_H
+#define VAR_MAP_H
+
 #include <stdlib.h>
 #include <string.h>
 #include "cnf_sat_formula.h"
@@ -62,3 +65,5 @@ bool get_VarMap(VarMap *map, Variable *key, bool *value);
  * @param map Pointer to the VarMap to free.
  */
 void cleanup_VarMap(VarMap *map);
+
+#endif /* VAR_MAP_H */

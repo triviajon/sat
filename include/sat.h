@@ -1,3 +1,6 @@
+#ifndef SAT_H
+#define SAT_H
+
 #include "var_map.h"
 #include <stdbool.h>
 #include <stdio.h>
@@ -39,3 +42,5 @@ UniqueVarArray *find_unique_variables(CNFSatFormula *formula);
  * @param formula Pointer to the UniqueVarArray to clean up.
  */
 void cleanup_UniqueVarArray(UniqueVarArray *array);
+
+#endif /* SAT_H */

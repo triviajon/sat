@@ -1,3 +1,6 @@
+#ifndef CNF_SAT_FORMULA_H
+#define CNF_SAT_FORMULA_H
+
 #include <stdbool.h>
 
 // Maxmimum length of a variable in a CNFSatFormula
@@ -27,3 +30,5 @@ typedef struct {
   Disjunction **disjunctions; // Array of disjunction pointers in the formula
   int num_disjunctions;       // Number of clauses in the formula
 } CNFSatFormula;
+
+#endif /* CNF_SAT_FORMULA_H */
