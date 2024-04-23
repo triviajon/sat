@@ -15,7 +15,7 @@ SHARED_OBJS = $(SRCDIR)/var_map.o $(SRCDIR)/sat.o $(SRCDIR)/parse.o $(SRCDIR)/so
 
 # Executable names
 MAIN_EXE = sat
-TEST_EXE = tester
+TEST_EXE = sat_tester
 
 # Conditional rules based on TEST variable
 ifeq ($(TEST), 1)
