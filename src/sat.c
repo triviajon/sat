@@ -94,6 +94,7 @@ bool eval_CNFSatFormula(CNFSatFormula *formula, VarMap *var_map, bool *result) {
     bool var_val;
     if (!get_VarMap(var_map, uniqueVarArr->vars[i], &var_val)) {
       printf("Could not find variable %s\n", uniqueVarArr->vars[i]->name);
+      cleanup_UniqueVarArray(uniqueVarArr);
       return false;
     }
   }
@@ -112,11 +113,13 @@ bool eval_CNFSatFormula(CNFSatFormula *formula, VarMap *var_map, bool *result) {
 
     if (!disjunction_result) {
       // Exit early if any of the disjunctions are false
-      *result = false; 
+      *result = false;
+      cleanup_UniqueVarArray(uniqueVarArr);
       return true;
     }
   }
 
-  *result = true;
+  *result = true;  
+  cleanup_UniqueVarArray(uniqueVarArr);
   return true;
 }
